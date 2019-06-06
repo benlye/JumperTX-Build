@@ -1,0 +1,24 @@
+dist: trusty
+sudo: true
+
+language: c
+
+services:
+  - docker
+
+notifications:
+  email: false
+
+before_install:
+  - git clone --recursive https://github.com/JumperXYZ/JumperTX.git /tmp/JumperTX
+  
+install:
+  - cd ${TRAVIS_BUILD_DIR}
+  - docker build -t benlye/jumpertx-build .
+
+script:
+  - docker run --rm -it -v /tmp/JumperTX:/jumpertx benlye/jumpertx-build
+  - ls -al /tmp/JumperTX/firmware.bin
+  - if [ ! -f /tmp/JumperTX/firmware.bin ]; then
+      exit 1;
+    fi
