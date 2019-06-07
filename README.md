@@ -25,4 +25,21 @@ A Docker container for building JumperTX for the Jumper T16 radio
    
    `docker run --rm -it -v "/home/benlye/github/JumperTX:/jumpertx" benlye/jumpertx-build`
 
-When finished the compiled firmware, `firmware.bin` will be in the root of the source directory.
+When finished the compiled firmware, `jumpertx-t16.bin` will be in the root of the source directory.
+
+## Changing the build flags
+Build flags can be changed by passing a switch to the Docker container when it is run.
+
+The syntax is `-e "CMAKE_FLAGS=FLAG1=VALUE1 FLAG2=VALUE2"`.
+
+Default flags will be replaced by the new value, additional flags will be appended.
+
+### Examples
+1. Build from the source in `C:\Users\benlyeGithub\JumperTX` and disable `HELI`:
+
+   `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO" benlye/jumpertx-build`
+
+1. Build from the source in `C:\Users\benlyeGithub\JumperTX`, disabling `HELI` and passing a new flag:
+
+   `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO FOO=BAR" benlye/jumpertx-build`
+
