@@ -23,4 +23,3 @@ python /build/build_firmware.py $*
 
 echo "Done."
 echo
-

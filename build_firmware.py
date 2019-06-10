@@ -5,6 +5,7 @@ import os
 import sys
 import subprocess
 import shutil
+from collections import OrderedDict
 
 # Specify some paths for the build
 build_dir = "/build"
@@ -17,32 +18,32 @@ output_path = os.path.join(output_dir, output_filename)
 max_size = 2 * 1024 * 1024
 
 # Default T16 cmake flags
-default_options = {
-    "PCB": ("T16"),
-    "GUI": ("YES"),
-    "GVARS": ("YES"),
-    "HELI": ("YES"),
-    "LCD_DUAL_BUFFER": ("YES"),
-    "LUA": ("YES"),
-    "LUA_COMPILER": ("YES"),
-    "MODULE_R9M_FULLSIZE": ("YES"),
-    "MULTIMODULE": ("YES"),
-    "PPM_CENTER_ADJUSTABLE": ("YES"),
-    "PPM_UNIT": ("US"),
-    "RAS": ("YES"),
-    "DISABLE_COMPANION": ("YES"),
-    "CMAKE_BUILD_TYPE": ("Release")
-}
+default_options = OrderedDict([
+    ("PCB", "T16"),
+    ("GUI", "YES"),
+    ("GVARS", "YES"),
+    ("HELI", "YES"),
+    ("LCD_DUAL_BUFFER", "YES"),
+    ("LUA", "YES"),
+    ("LUA_COMPILER", "YES"),
+    ("MODULE_R9M_FULLSIZE", "YES"),
+    ("MULTIMODULE", "YES"),
+    ("PPM_CENTER_ADJUSTABLE", "YES"),
+    ("PPM_UNIT", "US"),
+    ("RAS", "YES"),
+    ("DISABLE_COMPANION", "YES"),
+    ("CMAKE_BUILD_TYPE", "Release")
+])
 
 # Parse the extra options from the command line
-extra_options = {}
+extra_options = OrderedDict()
 if len(sys.argv) > 1:
     for i in range(1,len(sys.argv)):
         opt, val = sys.argv[i].split("=")
         extra_options[opt] = val
 
 # Compare the extra options to the defaults
-extra_command_options = {}
+extra_command_options = OrderedDict()
 for ext_opt, ext_value in extra_options.items():
     found = False
     for def_opt, def_value in default_options.items():
