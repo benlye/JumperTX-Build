@@ -1,7 +1,7 @@
 # JumperTX-Build
 A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX), the firmware for the [Jumper T16](https://www.jumper.xyz/jumpertx-t16) radio.
 
-[![Build Status](https://travis-ci.org/benlye/JumperTX-Docker.svg?branch=master)](https://travis-ci.org/benlye/JumperTX-Docker)
+[![Build Status](https://travis-ci.org/benlye/JumperTX-Build.svg?branch=master)](https://travis-ci.org/benlye/JumperTX-Build)
 
 # Instructions
 1. Install Docker
@@ -25,7 +25,14 @@ A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX
    
    `docker run --rm -it -v "/home/benlye/github/JumperTX:/jumpertx" benlye/jumpertx-build`
 
-The compiled firmware image, `jumpertx-t16.bin`, will be placed in the root of the source directory when the build has finished.
+The compiled firmware image will be placed in the root of the source directory when the build has finished.  
+
+The default output name is `jumpertx-t16-2.2.3-en.bin` but this will vary depending on any optional flags that may have been passed.  The format is `jumpertx-[PCB]-[version]-[language].bin`.
+
+## Languages
+The default language is English.  Alternative languages can by setting the `TRANSLATIONS=` CMAKE flag with a valid language code.
+
+Valid language codes are: EN (English), FR (French), SE (Swedish), IT (Italian), CZ (Czech), DE (German), PT (Portugese), ES (Spanish), PL (Polish), NL (Dutch).
 
 ## Changing the build flags
 Build flags can be changed by passing a switch to the Docker container when it is run.
@@ -43,3 +50,6 @@ Default flags will be replaced by the new value, additional flags will be append
 
    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO FOO=BAR" benlye/jumpertx-build`
 
+1. Build from the source in `C:\Users\benlyeGithub\JumperTX` with the language set to German:
+
+   `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=TRANSLATIONS=DE" benlye/jumpertx-build`
