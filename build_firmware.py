@@ -49,13 +49,13 @@ if not os.path.exists("/jumpertx/CMakeLists.txt"):
 
 # Parse the extra options from the command line
 extra_options = OrderedDict()
-if len(sys.argv) > 1:
-    for i in range(1,len(sys.argv)):
-        opt, val = sys.argv[i].split("=")
-        extra_options[opt] = val
 
-    # Print the CMAKE flags from the Docker command line
-    print ("Container CMAKE flags: %s" % " ".join(sys.argv[1:]))
+if "CMAKE_FLAGS" in os.environ:
+    print("Additional CMAKE Flags: %s" % os.environ["CMAKE_FLAGS"])
+    flags = os.environ["CMAKE_FLAGS"].split()
+    for flag in flags:
+        opt, val = flag.split("=")
+        extra_options[opt] = val
 else:
     print ("No additional CMAKE flags specified.")
 
@@ -75,7 +75,6 @@ else:
 
 # Compare the extra options to the board's defaults
 extra_command_options = OrderedDict()
-flagchanges = False
 for ext_opt, ext_value in extra_options.items():
     found = False
     for def_opt, def_value in default_options.items():
