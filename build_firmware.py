@@ -21,7 +21,26 @@ output_filename = "jumpertx"
 output_extension = ".bin"
 
 # Maximum size for the compiled firmware
+t12_max_size = 65536 * 8
 t16_max_size = 2 * 1024 * 1024
+
+# Default T12 cmake flags
+t12_default_options = OrderedDict([
+    ("PCB", "T12"),
+    ("GUI", "YES"),
+    ("GVARS", "YES"),
+    ("HELI", "YES"),
+    ("LCD_DUAL_BUFFER", "YES"),
+    ("LUA", "YES"),
+    ("LUA_COMPILER", "YES"),
+    ("MODULE_R9M_FULLSIZE", "YES"),
+    ("MULTIMODULE", "YES"),
+    ("PPM_CENTER_ADJUSTABLE", "YES"),
+    ("PPM_UNIT", "US"),
+    ("RAS", "YES"),
+    ("DISABLE_COMPANION", "YES"),
+    ("CMAKE_BUILD_TYPE", "Release")
+])
 
 # Default T16 cmake flags
 t16_default_options = OrderedDict([
@@ -40,6 +59,9 @@ t16_default_options = OrderedDict([
     ("DISABLE_COMPANION", "YES"),
     ("CMAKE_BUILD_TYPE", "Release")
 ])
+
+# Available languages
+available_languages = ("EN", "FR", "SE", "IT", "CZ", "DE", "PT", "ES", "PL", "NL")
 
 # Check that the source is valid
 if not os.path.exists("/jumpertx/CMakeLists.txt"):
@@ -65,13 +87,25 @@ if "PCB" in extra_options:
     board = extra_options["PCB"].upper()
 
 # Get the board defaults
-if board == "T16" or board == "T16HD":
+if board == "T12":
+    default_options = t12_default_options
+    max_size = t12_max_size
+elif board == "T16" or board == "T16HD":
     default_options = t16_default_options
     max_size = t16_max_size
 else:
-    print("ERROR: Invalid board (%s) specified. Valid boards are T16 and T16HD." % board)
+    print("")
+    print("ERROR: Invalid board (%s) specified. Valid boards T12, T16 and T16HD." % board)
     print("")
     exit(3)
+
+# If specified, validate the language from the flags
+if "TRANSLATIONS" in extra_options:
+    if not extra_options["TRANSLATIONS"].upper() in available_languages:
+        print("")
+        print("ERROR: Invalid language (%s) specified. Valid languages are: %s." % (extra_options["TRANSLATIONS"], " ".join(available_languages)))
+        print("")
+        exit(6)
 
 # Compare the extra options to the board's defaults
 extra_command_options = OrderedDict()
