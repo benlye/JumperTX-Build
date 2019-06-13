@@ -1,4 +1,4 @@
-# JumperTX-Docker
+# JumperTX-Build
 A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX), the firmware for the [Jumper T16](https://www.jumper.xyz/jumpertx-t16) radio.
 
 [![Build Status](https://travis-ci.org/benlye/JumperTX-Docker.svg?branch=master)](https://travis-ci.org/benlye/JumperTX-Docker)

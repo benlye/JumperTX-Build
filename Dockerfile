@@ -18,11 +18,10 @@ VOLUME ["/jumpertx"]
 WORKDIR /build
 
 # Add the build scripts
-COPY build_jumpertx.sh /build
 COPY build_firmware.py /build
 
 # Update the path
 ENV PATH $PATH:/opt/gcc-arm-none-eabi/bin:/jumpertx/radio/util
 
 # Run the shell script to build the firmware
-ENTRYPOINT ["bash", "-c", "/build/build_jumpertx.sh $CMAKE_FLAGS"]
+ENTRYPOINT ["bash", "-c", "python /build/build_firmware.py $CMAKE_FLAGS"]

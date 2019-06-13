@@ -18,37 +18,32 @@ install:
   - docker build -t benlye/jumpertx-build .
 
 script:
-  # Build with no extra cmake flags
+  # Build for T16 with no extra cmake flags
   - docker run --rm -it -v /tmp/JumperTX:/jumpertx benlye/jumpertx-build
-  - ls -al /tmp/JumperTX/jumpertx-t16.bin
-  - if [ ! -f /tmp/JumperTX/jumpertx-t16.bin ]; then
-      exit 1;
-    fi
 
-    # Build with a changed default cmake flag
+  # Build for T16 with a changed default cmake flag
   - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=HELI=NO" benlye/jumpertx-build
-  - ls -al /tmp/JumperTX/jumpertx-t16.bin
-  - if [ ! -f /tmp/JumperTX/jumpertx-t16.bin ]; then
-      exit 1;
-    fi
 
-    # Build with an additional cmake flag
+  # Build for T16 with an additional cmake flag
   - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=FOO=BAR" benlye/jumpertx-build
-  - ls -al /tmp/JumperTX/jumpertx-t16.bin
-  - if [ ! -f /tmp/JumperTX/jumpertx-t16.bin ]; then
-      exit 1;
-    fi
 
-    # Build with an additional cmake flag and a default changed
+  # Build for T16 with an additional cmake flag and a default changed
   - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=FOO=BAR HELI=NO" benlye/jumpertx-build
-  - ls -al /tmp/JumperTX/jumpertx-t16.bin
-  - if [ ! -f /tmp/JumperTX/jumpertx-t16.bin ]; then
-      exit 1;
-    fi
 
-  # Build with an additional cmake flag, a default changed, and a default the same
+  # Build for T16 with an additional cmake flag, a default changed, and a default the same
   - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=FOO=BAR HELI=NO MULTIMODULE=YES" benlye/jumpertx-build
-  - ls -al /tmp/JumperTX/jumpertx-t16.bin
-  - if [ ! -f /tmp/JumperTX/jumpertx-t16.bin ]; then
-      exit 1;
-    fi
+
+  # Build for T16HD
+  - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=PCB=T16HD" benlye/jumpertx-build
+
+  # Build for T12
+  #- docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=PCB=T12" benlye/jumpertx-build
+  
+  # Build for German
+  - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=TRANSLATIONS=DE" benlye/jumpertx-build
+
+  # Build for French
+  - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=TRANSLATIONS=FR" benlye/jumpertx-build
+
+  # Build for Czech
+  - docker run --rm -it -v /tmp/JumperTX:/jumpertx -e "CMAKE_FLAGS=TRANSLATIONS=CZ" benlye/jumpertx-build
