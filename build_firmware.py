@@ -10,7 +10,8 @@ from collections import OrderedDict
 
 # Show a header
 print("")
-print("JumperTX-Build - https://hub.docker.com/r/benlye/jumpertx-build")
+print("==============  JumperTX-Build  ==============")
+print("https://hub.docker.com/r/benlye/jumpertx-build")
 print("")
 
 # Specify some paths for the build
@@ -187,8 +188,8 @@ output_filename = output_filename + "-" + default_options["PCB"].lower()
 # Get the firmware version
 stampfile = "radio/src/stamp.h"
 for line in open(stampfile):
- if "#define VERSION " in line:
-   firmware_version = line.split()[2].replace('"','')
+    if "#define VERSION " in line:
+        firmware_version = line.split()[2].replace('"','')
 
 # Append the version to the output file name
 if firmware_version:
