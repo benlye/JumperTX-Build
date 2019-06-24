@@ -1,18 +1,31 @@
 # JumperTX-Build
+![Travis CI Status](https://travis-ci.org/benlye/JumperTX-Build.svg?branch=master)
+![Docker Stars](https://img.shields.io/docker/stars/benlye/jumpertx-build.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/benlye/jumpertx-build.svg)
+
 A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX), the firmware for the [Jumper T16](https://www.jumper.xyz/jumpertx-t16) radio.
 
-[![Build Status](https://travis-ci.org/benlye/JumperTX-Build.svg?branch=master)](https://travis-ci.org/benlye/JumperTX-Build)
+The container contains a Debian Linux image pre-configured with the tools required to build JumperTX.  Running the container will compile the firmware from a local source tree and produce a compiled firmware image.
 
 # Instructions
-1. Install Docker
-1. Clone the JumperTX repository:
-
-   `git clone --recursive https://github.com/JumperXYZ/JumperTX.git`
+## Setup
+1. [Install Docker](https://docs.docker.com/install/)
+   * If installing on Windows choose **Linux Containers** when prompted
    
 1. Pull the container:
 
    `docker pull benlye/jumpertx-build`
-   
+
+1. Clone the JumperTX repository:
+
+   `git clone --recursive https://github.com/JumperXYZ/JumperTX.git`
+
+## Modify the Firmware
+Use your tool of choice to make changes to the JumperTX source.
+
+([Visual Studio Code](https://code.visualstudio.com/download) is a good option).
+
+## Build the Firmware
 1. Run the container, specifying the path to the JumperTX source as a mount volume:
 
    `docker run --rm -it -v [JumperTX Source Path]:/jumpertx benlye/jumpertx-build`
@@ -29,12 +42,7 @@ The compiled firmware image will be placed in the root of the source directory w
 
 The default output name is `jumpertx-t16-2.2.3-en.bin` but this will vary depending on any optional flags that may have been passed.  The format is `jumpertx-[PCB]-[version]-[language].bin`.
 
-## Languages
-The default language is English.  Alternative languages can by setting the `TRANSLATIONS=` CMAKE flag with a valid language code.
-
-Valid language codes are: EN (English), FR (French), SE (Swedish), IT (Italian), CZ (Czech), DE (German), PT (Portugese), ES (Spanish), PL (Polish), NL (Dutch).
-
-## Changing the build flags
+## Changing the Build Flags
 Build flags can be changed by passing a switch to the Docker container when it is run.
 
 The syntax is `-e "CMAKE_FLAGS=FLAG1=VALUE1 FLAG2=VALUE2"`.
@@ -50,6 +58,22 @@ Default flags will be replaced by the new value, additional flags will be append
 
    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO FOO=BAR" benlye/jumpertx-build`
 
+## Changing the Language
+The default language is English.  Alternative languages can by setting the `TRANSLATIONS=` CMAKE flag with a valid language code.
+
+Valid language codes are: 
+* EN (English) 
+* FR (French) 
+* SE (Swedish)
+* IT (Italian)
+* CZ (Czech)
+* DE (German)
+* PT (Portugese)
+* ES (Spanish)
+* PL (Polish)
+* NL (Dutch)
+
+### Example: 
 1. Build from the source in `C:\Users\benlyeGithub\JumperTX` with the language set to German:
 
    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=TRANSLATIONS=DE" benlye/jumpertx-build`
