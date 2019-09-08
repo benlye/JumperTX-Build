@@ -2,8 +2,7 @@
 FROM debian:stretch
 
 # Update and install the required components
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install wget zip bzip2 cmake build-essential python python-pil git lib32ncurses5
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get -y install wget zip bzip2 cmake build-essential python python-pil git lib32ncurses5 libgtest-dev
 
 # Retrieve and install the required version of the ARM compiler
 RUN wget https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-linux.tar.bz2 -P /tmp --progress=bar:force
