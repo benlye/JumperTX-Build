@@ -21,6 +21,7 @@ output_filename = "jumpertx"
 output_extension = ".bin"
 
 # Maximum size for the compiled firmware
+max_size = -1
 t12_max_size = 65536 * 8
 t16_max_size = 2 * 1024 * 1024
 
@@ -61,6 +62,7 @@ t16_default_options = OrderedDict([
 # Generic build cmake flags
 t16_default_options_2_3 = OrderedDict([
     ("PCB", "X10"),
+    ("PCBREV", "T16"),
     ("GUI", "YES"),
     ("GVARS", "YES"),
     ("HELI", "YES"),
@@ -117,6 +119,7 @@ board = "T16"
 if "PCB" in extra_options:
     board = extra_options["PCB"].upper()
 
+board_rev = ""
 if "PCBREV" in extra_options:
     board_rev = extra_options["PCBREV"].upper()
 
@@ -164,7 +167,7 @@ for ext_opt, ext_value in extra_options.items():
             default_options[def_opt] = ext_value
             print ("Overriding default flag: %s=%s => %s=%s" % (def_opt, def_value, def_opt, ext_value))
         else:
-            if def_opt != "PCB":
+            if def_opt != "PCB" and def_opt != "PCBREV":
                 print ("Override for default flag matches default value: %s=%s" % (def_opt, def_value))
     else:
         print ("Adding additional flag: %s=%s" % (ext_opt, ext_value))
@@ -260,11 +263,16 @@ print("")
 print("Build completed in {0:.1f} seconds.".format((end-start)))
 print("")
 print("Firmware file: %s" % (output_path))
-print("Firmware size: {0}KB ({1:.0%})".format(binsize/1024, float(binsize)/float(max_size)))
+if max_size > -1:
+    print("Firmware size: {0}KB ({1:.0%})".format(binsize/1024, float(binsize)/float(max_size)))
+else:
+    print("")
+    print("WARNING: Unable to validate firmware image size")
+    print("Firmware size: {0}KB".format(binsize/1024))
 print("")
 
 # Exit with an error if the firmware is too big
-if binsize > max_size:
+if max_size > -1 and binsize > max_size:
     print("ERROR: Firmware is too large for radio.")
     print("")
     exit(1)
