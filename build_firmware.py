@@ -48,16 +48,47 @@ t16_default_options = OrderedDict([
     ("GUI", "YES"),
     ("GVARS", "YES"),
     ("HELI", "YES"),
-    ("LCD_DUAL_BUFFER", "YES"),
     ("LUA", "YES"),
     ("LUA_COMPILER", "YES"),
-    ("MODULE_R9M_FULLSIZE", "YES"),
     ("MULTIMODULE", "YES"),
     ("PPM_CENTER_ADJUSTABLE", "YES"),
     ("PPM_UNIT", "US"),
     ("RAS", "YES"),
     ("DISABLE_COMPANION", "YES"),
     ("CMAKE_BUILD_TYPE", "Release")
+])
+
+# Generic build cmake flags
+t16_default_options_2_3 = OrderedDict([
+    ("PCB", "X10"),
+    ("GUI", "YES"),
+    ("GVARS", "YES"),
+    ("HELI", "YES"),
+    ("LUA", "YES"),
+    ("LUA_COMPILER", "YES"),
+    ("MULTIMODULE", "YES"),
+    ("PPM_CENTER_ADJUSTABLE", "YES"),
+    ("PPM_UNIT", "US"),
+    ("RAS", "YES"),
+    ("DISABLE_COMPANION", "YES"),
+    ("CMAKE_BUILD_TYPE", "Release"),
+    ("HARDWARE_INTERNAL_MODULE", "ON"),
+    ("INTERNAL_MODULE_MULTI", "YES")
+])
+
+# Generic build cmake flags
+generic_default_options = OrderedDict([
+    ("GUI", "YES"),
+    ("GVARS", "YES"),
+    ("HELI", "YES"),
+    ("LUA", "YES"),
+    ("LUA_COMPILER", "YES"),
+    ("MULTIMODULE", "YES"),
+    ("PPM_CENTER_ADJUSTABLE", "YES"),
+    ("PPM_UNIT", "US"),
+    ("RAS", "YES"),
+    ("DISABLE_COMPANION", "YES"),
+    ("CMAKE_BUILD_TYPE", "Release"),
 ])
 
 # Available languages
@@ -86,18 +117,30 @@ board = "T16"
 if "PCB" in extra_options:
     board = extra_options["PCB"].upper()
 
+if "PCBREV" in extra_options:
+    board_rev = extra_options["PCBREV"].upper()
+
 # Get the board defaults
 if board == "T12":
+    radio = "T12"
     default_options = t12_default_options
     max_size = t12_max_size
 elif board == "T16" or board == "T16HD":
+    radio = "T16"
     default_options = t16_default_options
     max_size = t16_max_size
+elif board == "X10" and board_rev == "T16":
+    radio = "T16"
+    default_options = t16_default_options_2_3
+    max_size = t16_max_size
 else:
+    radio = board
+    default_options = generic_default_options
     print("")
-    print("ERROR: Invalid board (%s) specified. Valid boards T12, T16 and T16HD." % board)
+    print("WARNING: Unknown board (%s) specified. Known boards are T12, T16 and T16HD." % board)
+    print("Firmware will be built with generic defaults and any specified CMAKE flags.")
     print("")
-    exit(3)
+    #exit(3)
 
 # If specified, validate the language from the flags
 if "TRANSLATIONS" in extra_options:
@@ -184,7 +227,7 @@ if proc.returncode != 0:
 end = time.time()
 
 # Append the PCB type to the output file name
-output_filename = output_filename + "-" + default_options["PCB"].lower()
+output_filename = output_filename + "-" + radio.lower()
 
 # Get the firmware version
 stampfile = "radio/src/stamp.h"
