@@ -3,7 +3,7 @@
 ![Docker Stars](https://img.shields.io/docker/stars/benlye/jumpertx-build.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/benlye/jumpertx-build.svg)
 
-A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX), the firmware for the [Jumper T16](https://www.jumper.xyz/jumpertx-t16) radio.
+A Docker container for building [JumperTX](https://github.com/JumperXYZ/JumperTX), the firmware for the [Jumper T16](https://www.jumper.xyz/portal.php?mod=view&aid=13) and [Jumper T12](https://www.jumper.xyz/portal.php?mod=view&aid=14) radio.
 
 The container contains a Debian Linux image pre-configured with the tools required to build JumperTX.  Running the container will compile the firmware from a local source tree and produce a compiled firmware image.
 
@@ -57,6 +57,13 @@ Default flags will be replaced by the new value, additional flags will be append
 1. Build from the source in `C:\Users\benlyeGithub\JumperTX`, disabling `HELI` and passing a new flag:
 
    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO FOO=BAR" benlye/jumpertx-build`
+
+## Setting PCB board
+The default PCB board is Jumper T16, changing to alternative PCB board by setting the `PCB=` CMAKE flag with a valid PCB code.
+
+### Example:
+1. Build from the source in `C:\Users\benlyeGithub\JumperTX` for Jumper T12:
+    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=PCB=T12" benlye/jumpertx-build`
 
 ## Changing the Language
 The default language is English.  Alternative languages can by setting the `TRANSLATIONS=` CMAKE flag with a valid language code.
