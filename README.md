@@ -50,6 +50,10 @@ The syntax is `-e "CMAKE_FLAGS=FLAG1=VALUE1 FLAG2=VALUE2"`.
 Default flags will be replaced by the new value, additional flags will be appended.
 
 ### Examples
+1. Build from the source in `C:\Users\benlyeGithub\JumperTX` and enable support for R9 Flex:
+
+   `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=MODULE_R9M_FLEX_FW=YES" benlye/jumpertx-build`
+
 1. Build from the source in `C:\Users\benlyeGithub\JumperTX` and disable `HELI`:
 
    `docker run --rm -it -v "C:/Users/benlye/Github/JumperTX:/jumpertx" -e "CMAKE_FLAGS=HELI=NO" benlye/jumpertx-build`
