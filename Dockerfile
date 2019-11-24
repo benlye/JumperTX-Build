@@ -2,7 +2,8 @@
 FROM debian:stretch
 
 # Update and install the required components
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get -y install wget zip bzip2 cmake build-essential python python-pil git lib32ncurses5 libgtest-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get -y install wget zip bzip2 cmake build-essential python python-pil git lib32ncurses5 libgtest-dev clang-7 python-pip
+RUN pip install clang
 
 # Retrieve and install the required version of the ARM compiler
 RUN wget https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-linux.tar.bz2 -P /tmp --progress=bar:force
@@ -23,4 +24,4 @@ COPY build_firmware.py /build
 ENV PATH $PATH:/opt/gcc-arm-none-eabi/bin:/jumpertx/radio/util
 
 # Run the shell script to build the firmware
-ENTRYPOINT ["bash", "-c", "python /build/build_firmware.py $CMAKE_FLAGS"]
+CMD ["bash", "-c", "python /build/build_firmware.py $CMAKE_FLAGS"]

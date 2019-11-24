@@ -183,7 +183,7 @@ os.chdir(build_dir)
 print("")
 print ("Copying source from /jumpertx to /tmp/jumpertx ...")
 print("")
-shutil.copytree("/jumpertx", "/tmp/jumpertx")
+shutil.copytree("/jumpertx", "/tmp/jumpertx");
 
 # Prepare the cmake command
 cmd = ["cmake"]
